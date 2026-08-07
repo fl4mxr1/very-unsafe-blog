@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 
@@ -15,7 +14,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import main.HttpUtil;
+import main.util.SearchQuery;
 
 public class GetContentEndpoint implements HttpHandler {
     private String getPostContent(String id) throws IOException {
@@ -37,14 +36,15 @@ public class GetContentEndpoint implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try (exchange) {
-            Map<String, String> params = HttpUtil.queryToMap(exchange.getRequestURI().getQuery());
+            SearchQuery query = new SearchQuery(exchange.getRequestURI().getQuery());
+            
             Headers headers = exchange.getResponseHeaders();
             headers.set("Access-Control-Allow-Origin", "*");
 
             String postContentString = null;
             
             try {
-                postContentString = getPostContent(params.get("id"));
+                postContentString = getPostContent(query.get("id"));
             } catch (IOException e) {
                 String errMessage = "Unexpected error while getting post data: " + e.getMessage();
                 System.err.println(errMessage);

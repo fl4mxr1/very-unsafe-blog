@@ -3,7 +3,7 @@ package main.contexts.blog.endpoints;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-public class GetAllPostIDs implements HttpHandler {
+public class GetAllPosts implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) {
         //Should take in query parameters:

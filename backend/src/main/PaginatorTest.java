@@ -1,0 +1,21 @@
+package main;
+
+import java.util.ArrayList;
+
+import main.util.Paginator;
+import main.util.Paginator.Page;
+
+public class PaginatorTest {
+    public static void main(String[] args) {
+        ArrayList<Integer> arr = new ArrayList<>();
+
+        for (int i = 0; i < 1000; i++) {
+            arr.add(i + 1);
+        }
+
+        Paginator paginator = new Paginator(arr.toArray());
+        Page page = paginator.getPage(501, 1);
+        System.out.println(page.data.length);
+        System.out.println(page.toJson().toString());
+    }
+}
