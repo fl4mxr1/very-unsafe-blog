@@ -9,6 +9,7 @@ public class GetAllPostIDs implements HttpHandler {
         //Should take in query parameters:
         //page?: which page number
         //query?: search query
-        //If there is no page number specified it will instead respond with page data (how many pages, page size etc)
+        //pageSize: how many posts in one page
+        //If there is no page number specified it will instead respond with only page data (how many pages, page size etc)
     }
 }
