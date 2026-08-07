@@ -1,0 +1,8 @@
+{
+	"files.associations": {
+		"*.css": "tailwindcss"
+	}, 
+	"java.project.referencedLibraries": [
+		"backend/lib/**/*.jar"
+	]
+}
