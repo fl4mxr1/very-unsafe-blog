@@ -1,38 +1,19 @@
 package main.contexts.blog.endpoints;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
-import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import main.util.SearchQuery;
+import main.util.data.Post;
+import main.util.data.PostTracker;
 
 public class GetDataEndpoint implements HttpHandler {
-    private String getPostData(String id) throws IOException {
-        InputStream stream;
-        try {
-            stream = Files.newInputStream(
-                Paths.get("storage/posts/" + id + "/data.json"), 
-                StandardOpenOption.READ
-            );  
-        } catch (IOException e) {
-            return null;
-        }
-        if (stream == null) {
-            return null;
-        }
-        return IOUtils.toString(stream, StandardCharsets.UTF_8);
-    }
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try (exchange) {
@@ -42,9 +23,17 @@ public class GetDataEndpoint implements HttpHandler {
             headers.set("Access-Control-Allow-Origin", "*");
 
             String postDataJsonString = null;
-            
             try {
-                postDataJsonString = getPostData(query.get("id"));
+                System.out.println("getting post");
+                Post post = PostTracker.tracker.getPostFromId(query.get("id"));
+                System.out.println(post);
+                if (post == null) {
+                    System.out.println("doesnt exist");
+                    throw new IOException("Post either doesn't exist or there was an unexpected error.");
+                }
+
+                JSONObject postJson = new JSONObject(post);
+                postDataJsonString = postJson.toString();
             } catch (IOException e) {
                 String errMessage = "Unexpected error while getting post data: " + e.getMessage();
                 System.err.println(errMessage);
@@ -53,6 +42,8 @@ public class GetDataEndpoint implements HttpHandler {
                 
                 OutputStream output = exchange.getResponseBody();
                 output.write(errMessage.getBytes());
+
+                System.out.println(e.getMessage());
             } finally {
                 if (postDataJsonString != null) {
                     headers.set("Content-Type", "application/json");

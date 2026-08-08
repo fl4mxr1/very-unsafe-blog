@@ -8,22 +8,13 @@ import main.contexts.blog.endpoints.GetDataEndpoint;
 import main.contexts.blog.endpoints.PublishEndpoint;
 
 public class BlogContext implements Context {
-    public static BlogContext instance;
-
-    private BlogContext() {}
+    public BlogContext() {}
 
     @Override
     public void createContexts(HttpServer server) {
-        server.createContext("/blog/post/publish", new PublishEndpoint());
-        server.createContext("/blog/post/get-data", new GetDataEndpoint());
-        server.createContext("/blog/post/get-content", new GetContentEndpoint());
-    }
-
-    public static BlogContext get() {
-        if (instance == null) {
-            instance = new BlogContext();
-        }
-        return instance;
+        server.createContext("/post/publish", new PublishEndpoint());
+        server.createContext("/post/get-data", new GetDataEndpoint());
+        server.createContext("/post/get-content", new GetContentEndpoint());
     }
 
     //TODO: Add /blog/post/get-all endpoint with pagination
