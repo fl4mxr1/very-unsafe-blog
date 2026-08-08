@@ -15,7 +15,7 @@ export function getPostDataFromId(id: string): Promise<PostData> {
         throw new InvalidArgumentException("Cannot get post data with a null ID.");
     }
     return new Promise((fulfill, reject) => {
-        fetch(`${API_URL}/blog/post/get-data?id=${id}`, {
+        fetch(`${API_URL}/post/get-data?id=${id}`, {
             method: "GET", 
         })
             .then((res => {
@@ -32,7 +32,7 @@ export function getPostContentFromId(id: string): Promise<string> {
         throw new InvalidArgumentException("Cannot get post content with a null ID.");
     }
     return new Promise((fulfill, reject) => {
-        fetch(`${API_URL}/blog/post/get-content?id=${id}`, {
+        fetch(`${API_URL}/post/get-content?id=${id}`, {
             method: "GET", 
         })
             .then((res => {

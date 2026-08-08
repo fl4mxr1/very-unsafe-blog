@@ -1,38 +1,16 @@
 package main.contexts.blog.endpoints;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-
-import org.apache.commons.io.IOUtils;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import main.util.SearchQuery;
+import main.util.data.Post;
 
 public class GetContentEndpoint implements HttpHandler {
-    private String getPostContent(String id) throws IOException {
-        InputStream stream;
-        try {
-            stream = Files.newInputStream(
-                Paths.get("storage/posts/" + id + "/content.md"), 
-                StandardOpenOption.READ
-            );  
-        } catch (IOException e) {
-            return null;
-        }
-        if (stream == null) {
-            return null;
-        }
-        return IOUtils.toString(stream, StandardCharsets.UTF_8);
-    }
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try (exchange) {
@@ -42,9 +20,9 @@ public class GetContentEndpoint implements HttpHandler {
             headers.set("Access-Control-Allow-Origin", "*");
 
             String postContentString = null;
-            
             try {
-                postContentString = getPostContent(query.get("id"));
+                Post post = Post.fromId(query.get("id"));
+                postContentString = post.getContent();
             } catch (IOException e) {
                 String errMessage = "Unexpected error while getting post data: " + e.getMessage();
                 System.err.println(errMessage);

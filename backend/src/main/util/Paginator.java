@@ -22,7 +22,7 @@ public class Paginator {
         }
 
         Object[] pageData = Arrays.copyOfRange(data, startIndex, endIndex);
-        Page page = new Page(pageData, pageSize, pageNumber);
+        Page page = new Page(pageData, pageSize, pageNumber, getPageCount(pageSize));
         return page;
     }
 
@@ -47,17 +47,20 @@ public class Paginator {
         public final Object[] data;
         public final int pageSize;
         public final int pageNumber;
+        public final int pageCount;
 
-        public Page(Object[] data, int pageSize, int pageNumber) {
+        public Page(Object[] data, int pageSize, int pageNumber, int pageCount) {
             this.data = data;
             this.pageSize = pageSize;
             this.pageNumber = pageNumber;
+            this.pageCount = pageCount;
         }
 
         public JSONObject toJson() {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("pageSize", this.pageSize);
             jsonObject.put("pageNumber", this.pageNumber);
+            jsonObject.put("pageCount", this.pageCount);
             jsonObject.put("data", this.data);
 
             return jsonObject;

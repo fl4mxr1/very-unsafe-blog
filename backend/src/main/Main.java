@@ -19,7 +19,7 @@ public class Main {
             return;
         }
         
-        BlogContext blog = BlogContext.get();
+        BlogContext blog = new BlogContext();
         blog.createContexts(httpServer);
         httpServer.start();
 
