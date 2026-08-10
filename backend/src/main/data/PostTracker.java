@@ -1,9 +1,11 @@
-package main.util.data;
+package main.data;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,28 @@ import org.json.JSONObject;
 public class PostTracker {
     public static final PostTracker tracker = new PostTracker();
     private Map<String, Post> posts = new HashMap<>();
+
+    public PostTracker() {
+        try (DirectoryStream<Path> postStorageDirectory = 
+            Files.newDirectoryStream(Path.of("storage/posts").toAbsolutePath())
+        ) {
+            for (Path path: postStorageDirectory) {
+                File postDirectory = path.toFile();
+                if (!postDirectory.isDirectory()) {
+                    return;
+                }
+                String postId = postDirectory.getName();
+                posts.put(
+                    postId, 
+                    Post.fromId(postId)
+                );
+            }
+        } catch (IOException e) {
+            System.out.println("Couldnt load existing posts due to IOException: " + e.getMessage());
+        } finally {
+            System.out.println(posts.toString());
+        }
+    }
 
     public Post getPostFromId(String id) {
         Post post = posts.get(id);
@@ -81,5 +105,9 @@ public class PostTracker {
         Post post = new Post(postId, title, author, preview, postedAt);
         posts.put(postId, post);
         return post;
+    }
+
+    public Post[] queryPosts() {
+        return null;
     }
 }

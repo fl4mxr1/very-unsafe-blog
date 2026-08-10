@@ -1,16 +1,58 @@
-import { getPostDataFromId, getPostContentFromId, type PostData } from "$lib/backend/backend-http";
-
 const CACHE_EXPIRES_AFTER_MILLIS = 60 * 60 * 1000 // 1 hour in milliseconds
+const BACKEND_URL = "http://localhost:8080";
 
-//class CouldNotFetchPostDataError extends Error {};
+export interface PostData {
+    id?: string, 
+    title?: string, 
+    preview?: string, 
+    author?: string, 
+    postedAt?: number,
+}
+
+function getPostDataFromId(id: string): Promise<PostData> {
+    if (id === null) {
+        throw new InvalidArgumentException("Cannot get post data with a null ID.");
+    }
+    return new Promise((fulfill, reject) => {
+        fetch(`${BACKEND_URL}/post/get-data?id=${id}`, {
+            method: "GET", 
+        })
+            .then((res => {
+                res.json()
+                    .then(fulfill)
+                    .catch(reject)
+            }))
+            .catch(reject)
+    })
+}
+
+function getPostContentFromId(id: string): Promise<string> {
+    if (id === null) {
+        throw new InvalidArgumentException("Cannot get post content with a null ID.");
+    }
+    return new Promise((fulfill, reject) => {
+        fetch(`${BACKEND_URL}/post/get-content?id=${id}`, {
+            method: "GET", 
+        })
+            .then((res => {
+                res.text()
+                    .then(fulfill)
+                    .catch(reject)
+            }))
+            .catch(reject)
+    })
+}
+
+// get rid of this maybe?
+class InvalidArgumentException extends Error {};
 
 // Class which is used to get post data from the backend. Also handles caching and stuff
 export default class Post {
     #id?: string;
-    #title?: string;
-    #author?: string;
-    #postedAt?: number;
-    #preview?: string;
+    #title?: string = $state();
+    #author?: string = $state();
+    #postedAt?: number = $state();
+    #preview?: string = $state();
 
     //TODO: Save cache data to localStorage?
     #cachedPostContent?: string;
@@ -20,10 +62,9 @@ export default class Post {
         this.#id = id;
     }
 
-    async fetchPostData(): Promise<Post | undefined> {
+    async fetchData(): Promise<Post | undefined> {
         if (this.#id === undefined) return; // too lazy to do error handling..
         const postData: PostData = await getPostDataFromId(this.#id);
-        console.log(postData);
         // if (postData.title === undefined || postData.author === undefined || postData.postedAt === undefined || postData.preview === undefined) {
         //     throw new CouldNotFetchPostDataError("Unexpected error occured when fecthing post data.");
         // }

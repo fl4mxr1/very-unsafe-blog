@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Sofia+Sans+Extra+Condensed:ital,wght@0,1..1000;1,1..1000&display=swap');
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
 @theme {
     --font-serif: "Libertinus Serif", serif;
@@ -10,7 +11,7 @@
 @layer base {
     h1, h2, h3, h4, h5, h6 {
         font-family: var(--font-display);
-        font-weight: var(--font-weight-black);
+        font-weight: var(--font-weight-light);
     }
 
     h1 {
@@ -23,6 +24,7 @@
 
     h3 {
         font-size: var(--text-3xl);
+        font-weight: var(--font-weight-regular);
     }
 
     h4 {
@@ -40,4 +42,13 @@
     * {
         font-family: var(--font-serif);
     }
+}
+
+html {
+    background-color: var(--color-black);
+}
+
+*::selection {
+    background: var(--color-amber-300);
+    color: var(--color-black);
 }

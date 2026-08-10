@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 
 import main.contexts.blog.BlogContext;
+import main.data.PostTracker;
 
 public class Main {
     static final int SERVER_PORT = 8080;
@@ -22,6 +23,8 @@ public class Main {
         BlogContext blog = new BlogContext();
         blog.createContexts(httpServer);
         httpServer.start();
+
+        PostTracker.tracker.getClass();
 
         System.out.println("Server started at port " + SERVER_PORT);
         System.out.println("URL: http://localhost:" + SERVER_PORT);

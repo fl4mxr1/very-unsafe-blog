@@ -1,3 +1,5 @@
 <script lang="ts">
-	import Button from "../../components/Button.svelte";
+	import PostHeader from "../../components/post/PostHeader.svelte";
 </script>
+
+<PostHeader />

@@ -7,14 +7,14 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import main.util.SearchQuery;
-import main.util.data.Post;
+import main.data.Post;
+import main.util.UrlQueryParameters;
 
 public class GetContentEndpoint implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try (exchange) {
-            SearchQuery query = new SearchQuery(exchange.getRequestURI().getQuery());
+            UrlQueryParameters query = new UrlQueryParameters(exchange.getRequestURI().getQuery());
             
             Headers headers = exchange.getResponseHeaders();
             headers.set("Access-Control-Allow-Origin", "*");

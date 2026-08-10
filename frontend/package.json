@@ -24,9 +24,12 @@
 	},
 	"dependencies": {
 		"@feelinglovelynow/get-relative-time": "^1.1.2",
+		"@material-symbols-svg/svelte": "^0.13.0",
+		"@tailwindcss/typography": "^0.5.20",
 		"carta-md": "^4.11.2",
 		"isomorphic-dompurify": "^3.22.0",
 		"marked": "^18.0.9",
+		"material-symbols": "^0.45.10",
 		"svelte-splitpanes": "^8.0.12"
 	}
 }

@@ -6,10 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Parses a URL search query string to make it easier to access.
-public class SearchQuery {
+// I could probably use regex instead
+public class UrlQueryParameters {
     private Map<String, String> queryMap = new HashMap<>();
 
-    public SearchQuery(String query) {
+    public UrlQueryParameters(String query) {
         if (query == null) {
             return;
         }

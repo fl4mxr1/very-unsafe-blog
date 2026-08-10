@@ -1,4 +1,4 @@
-package main.util.data;
+package main.data;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +18,8 @@ public class Post {
     public final String author;
     public final String preview;
     public final long postedAt;
+
+    public String content;
 
     public Post(String id, String title, String author, String preview, long postedAt) {
         this.id = id;
@@ -78,6 +80,10 @@ public class Post {
     }
 
     public String getContent() throws IOException {
+        if (content != null) {
+            return content;
+        }
+
         InputStream stream;
         try {
             stream = Files.newInputStream(
@@ -97,6 +103,7 @@ public class Post {
             System.out.println("Couldn't parse content.md of post id " + id + ", error:" + e.getMessage());
             return null;
         }
+        content = contentString;
         return contentString;
     }
 

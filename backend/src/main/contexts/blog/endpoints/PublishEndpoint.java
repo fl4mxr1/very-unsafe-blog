@@ -12,9 +12,9 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import main.util.SearchQuery;
-import main.util.data.Post;
-import main.util.data.PostTracker;
+import main.data.Post;
+import main.data.PostTracker;
+import main.util.UrlQueryParameters;
 
 public class PublishEndpoint implements HttpHandler {
     @Override
@@ -29,7 +29,7 @@ public class PublishEndpoint implements HttpHandler {
                 return;
             }
 
-            SearchQuery query = new SearchQuery(exchange.getRequestURI().getQuery());
+            UrlQueryParameters query = new UrlQueryParameters(exchange.getRequestURI().getQuery());
             if (!query.exists("title") || !query.exists("author")) { // Make sure URL has title and author parameters
                 String errMessage = "URL missing title or author parameters.";
                 exchange.sendResponseHeaders(400, errMessage.length());
